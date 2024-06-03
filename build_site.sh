@@ -61,17 +61,17 @@ buildScraper()
   version: $version
   date: $updated
   path: $scraper_id.zip
-  sha256: $(sha256sum "$zipfile" | cut -d' ' -f1)" >> "$outdir"/index.yml
+  sha256: $(sha256sum "$zipfile" | cut -d' ' -f1)" >> "$outdir"/scrapers.yml
 
     # handle dependencies
     if [ ! -z "$dep" ]; then
-        echo "  requires:" >> "$outdir"/index.yml
+        echo "  requires:" >> "$outdir"/scrapers.yml
         for d in ${dep//,/ }; do
-            echo "    - $d" >> "$outdir"/index.yml
+            echo "    - $d" >> "$outdir"/scrapers.yml
         done
     fi
 
-    echo "" >> "$outdir"/index.yml
+    echo "" >> "$outdir"/scrapers.yml
 }
 
 buildPlugin() 
@@ -115,17 +115,17 @@ buildPlugin()
   version: $version
   date: $updated
   path: $plugin_id.zip
-  sha256: $(sha256sum "$zipfile" | cut -d' ' -f1)" >> "$outdir"/index.yml
+  sha256: $(sha256sum "$zipfile" | cut -d' ' -f1)" >> "$outdir"/plugins.yml
 
     # handle dependencies
     if [ ! -z "$dep" ]; then
-        echo "  requires:" >> "$outdir"/index.yml
+        echo "  requires:" >> "$outdir"/plugins.yml
         for d in ${dep//,/ }; do
-            echo "    - $d" >> "$outdir"/index.yml
+            echo "    - $d" >> "$outdir"/plugins.yml
         done
     fi
 
-    echo "" >> "$outdir"/index.yml
+    echo "" >> "$outdir"/plugins.yml
 }
 
 # find all yml files in ./scrapers - these are packages individually
@@ -133,7 +133,7 @@ find ./scrapers -mindepth 1 -name *.yml | while read file; do
     buildPlugin "$file"
 done
 
-# find all yml files in ./plu - these are packages individually
+# find all yml files in ./plugins - these are packages individually
 find ./plugins -mindepth 1 -name *.yml | while read file; do
     buildScraper "$file"
 done
