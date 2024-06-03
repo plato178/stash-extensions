@@ -130,12 +130,12 @@ buildPlugin()
 
 # find all yml files in ./scrapers - these are packages individually
 find ./scrapers -mindepth 1 -name *.yml | while read file; do
-    buildPlugin "$file"
+    buildScraper "$file"
 done
 
 # find all yml files in ./plugins - these are packages individually
 find ./plugins -mindepth 1 -name *.yml | while read file; do
-    buildScraper "$file"
+    buildPlugin "$file"
 done
 
 # for f in ./scrapers/*.yml; do 
