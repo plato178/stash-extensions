@@ -8,15 +8,18 @@
   async function initialiseStyles() {
     const enableBlur = localStorage.getItem('sfw-enabled') === 'true'
 
-    const newStylesEl = await defineSfwStyles()
-    attachSfwStyles(newStylesEl)
+    // const newStylesEl = await defineSfwStyles()
+    // attachSfwStyles(newStylesEl)
 
+    const newStylesEl = document.querySelector('link[href*="sfw-switch"]')
     newStylesEl.disabled = !enableBlur
 
     waitForElementClass("plugin_sfw", () => {
       enableBlur
-        ? document.getElementById("plugin_sfw").style.color = "#5cff00" // green
-        : document.getElementById("plugin_sfw").style.color = "#f5f8fa"
+        // ? document.getElementById("plugin_sfw").style.color = "#5cff00" // green
+        // : document.getElementById("plugin_sfw").style.color = "#f5f8fa"
+        ? document.querySelector(".plugin_sfw").style.color = "#5cff00" // green
+        : document.querySelector(".plugin_sfw").style.color = "#f5f8fa"
     })
   }
 
@@ -119,7 +122,7 @@
   function createSfwButton () {
     if (!document.getElementById("plugin_sfw")) {
       const pluginDiv = document.createElement('a');
-      pluginDiv.classList.add("nav-utility", 'nav-link')
+      pluginDiv.classList.add("plugin_sfw", "nav-utility", 'nav-link')
 
       localStorage.getItem('sfw-enabled') === 'true'
         ? pluginDiv.style.color = "#5cff00" // white
@@ -143,9 +146,11 @@
           navBtnContainer.insertBefore(pluginDiv, navBtnContainer.childNodes[0]);
         }
 
-        document
-          .getElementById("plugin_sfw")
-          .addEventListener("click", toggleSwitch, false);
+        // document
+        //   .getElementById("plugin_sfw")
+        //   .addEventListener("click", toggleSwitch, false);
+
+        pluginDiv.addEventListener("click", toggleSwitch, false);
       })
     }
   }
