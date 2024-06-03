@@ -12,6 +12,7 @@
     // attachSfwStyles(newStylesEl)
 
     const newStylesEl = document.querySelector('link[href*="sfw-switch"]')
+    newStylesEl.classList.add('sfw-styles')
     newStylesEl.disabled = !enableBlur
 
     waitForElementClass("plugin_sfw", () => {
@@ -120,7 +121,8 @@
   }
 
   function createSfwButton () {
-    if (!document.getElementById("plugin_sfw")) {
+    // if (!document.getElementById("plugin_sfw")) {
+    if (!document.querySelector(".plugin_sfw")) {
       const pluginDiv = document.createElement('a');
       pluginDiv.classList.add("plugin_sfw", "nav-utility", 'nav-link')
 
@@ -160,10 +162,12 @@
     const enableBlur = localStorage.getItem('sfw-enabled') === 'true'
 
     if (!enableBlur) { // NSFW
-      document.getElementById("plugin_sfw").style.color = "#5cff00"; // green
+      // document.getElementById("plugin_sfw").style.color = "#5cff00"; // green
+      document.querySelector("plugin_sfw").style.color = "#5cff00"; // green
       localStorage.setItem('sfw-enabled', 'true')
     } else { // SFW
-      document.getElementById("plugin_sfw").style.color = "#f5f8fa"; // white
+      // document.getElementById("plugin_sfw").style.color = "#f5f8fa"; // white
+      document.querySelector(".plugin_sfw").style.color = "#f5f8fa"; // white
       localStorage.removeItem('sfw-enabled')
     }
     
