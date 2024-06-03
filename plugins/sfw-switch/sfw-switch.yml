@@ -1,0 +1,17 @@
+name: SFW Switch
+description: Sync Markers with timestamp.trade, a new database for sharing markers.
+version: 0.1
+url: https://github.com/plato178/stash-plugins
+ui:
+  requires:
+    - CommunityScriptsUILibrary
+  # css:
+  #   - sfw-switch.css
+  javascript:
+    - sfw-switch.js
+settings:
+  blurStudioLogos:
+    displayName: Blur Studio Logos
+    description: Optionally blur studio logos as well as scene thumbnails.
+    type: BOOLEAN
+
