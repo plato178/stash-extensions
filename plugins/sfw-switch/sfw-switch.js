@@ -163,7 +163,7 @@
 
     if (!enableBlur) { // NSFW
       // document.getElementById("plugin_sfw").style.color = "#5cff00"; // green
-      document.querySelector("plugin_sfw").style.color = "#5cff00"; // green
+      document.querySelector(".plugin_sfw").style.color = "#5cff00"; // green
       localStorage.setItem('sfw-enabled', 'true')
     } else { // SFW
       // document.getElementById("plugin_sfw").style.color = "#f5f8fa"; // white
