@@ -144,6 +144,7 @@
   function addBlurStudioLogosStyles(enableBlur, { blurStudioLogos }) {
     const newStylesEl = createNewStyleElement()
     newStylesEl.classList.add('sfw-styles-option')
+    newStylesEl.setAttribute('data-config-name', 'blurStudioLogos')
     
     newStylesEl.innerText = `
       .image-thumbnail,
@@ -200,7 +201,7 @@
   }
 
   function toggleSwitch () {
-    const sfwStyles = document.querySelectorAll('.sfw-styles')
+    const sfwStyles = [...document.querySelectorAll('.sfw-styles')]
     const enableBlur = localStorage.getItem('sfw-enabled') === 'true'
 
     if (!enableBlur) { // NSFW
@@ -211,8 +212,18 @@
       localStorage.removeItem('sfw-enabled')
     }
     
-    sfwStyles.disabled = enableBlur
-    addOptionalStyles(enableBlur)
+    for (const style of sfwStyles) {
+      if (style.tagName === 'link') {
+        style.disabled = enableBlur
+      } else {
+        csLib.getConfiguration('sfw-switch', {})
+          .then(config => {
+            const configKey = style.dataset.configName
+            const configValue = config[configKey]
+            style.disabled = !enableBlur && !configValue
+          })
+      }
+    }
   }
 
   function waitForElementClass (elementId, callBack, time = 100) {
