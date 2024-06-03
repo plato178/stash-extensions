@@ -23,7 +23,7 @@
     newStylesEl.classList.add('sfw-styles')
 
     // const { blurStudioLogos } = await csLib.getConfiguration('SFW Switch', {});
-    const config = await csLib.getConfiguration('SFW Switch', {});
+    const config = await csLib.getConfiguration('sfw-switch', {});
     console.log('defineSfwStyles config', config)
 
     newStylesEl.innerText = `
