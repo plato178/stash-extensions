@@ -1,4 +1,7 @@
 (async function () {
+  const _log = (...args) => csLib.getConfiguration('sfw-switch', {})
+    .then(config => (config.debug && console.log('[sfw-switch]', ...args)))
+  
   await initialiseStyles()
   createSfwButton()
   
@@ -22,20 +25,21 @@
 
     newStylesEl.classList.add('sfw-styles')
 
-    const { blurStudioLogos } = await csLib.getConfiguration('sfw-switch', {});
+    const config = await csLib.getConfiguration('sfw-switch', {});
+    _log('defineSfwStyles config', config)
 
     newStylesEl.innerText = `
       .scene-card-preview-video,
       .scene-card-preview-image,
       .image-card-preview-image,
-      ${blurStudioLogos ? '.image-thumbnail' : ''}
+      ${config.blurStudioLogos ? '.image-thumbnail' : ''}
       .gallery-card-image,
       .performer-card-image,
       img.performer,
       .movie-card-image,
       .gallery .flexbin img,
       .wall-item-media,
-      ${blurStudioLogos ? '.scene-studio-overlay .image-thumbnail' : ''}
+      ${config.blurStudioLogos ? '.scene-studio-overlay .image-thumbnail' : ''}
       .image-card-preview-image,
       #scene-details-container .text-input,
       #scene-details-container .scene-header,
@@ -75,7 +79,7 @@
       div:hover>.scene-header,
       .studio-logo:hover,
       .scene-cover:hover,
-      ${blurStudioLogos ? '.image-thumbnail:hover' : ''}
+      ${config.blurStudioLogos ? '.image-thumbnail:hover' : ''}
       .scene-card-preview:hover,
       .scrubber-item:hover,
 
