@@ -32,14 +32,14 @@
       .scene-card-preview-video,
       .scene-card-preview-image,
       .image-card-preview-image,
-      ${config.blurStudioLogos ? '.image-thumbnail' : ''}
+      ${config.blurStudioLogos ? '.image-thumbnail,' : ''}
       .gallery-card-image,
       .performer-card-image,
       img.performer,
       .movie-card-image,
       .gallery .flexbin img,
       .wall-item-media,
-      ${config.blurStudioLogos ? '.scene-studio-overlay .image-thumbnail' : ''}
+      ${config.blurStudioLogos ? '.scene-studio-overlay .image-thumbnail,' : ''}
       .image-card-preview-image,
       #scene-details-container .text-input,
       #scene-details-container .scene-header,
@@ -79,7 +79,7 @@
       div:hover>.scene-header,
       .studio-logo:hover,
       .scene-cover:hover,
-      ${config.blurStudioLogos ? '.image-thumbnail:hover' : ''}
+      ${config.blurStudioLogos ? '.image-thumbnail:hover,' : ''}
       .scene-card-preview:hover,
       .scrubber-item:hover,
 
