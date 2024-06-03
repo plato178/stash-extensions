@@ -22,7 +22,9 @@
 
     newStylesEl.classList.add('sfw-styles')
 
-    const { blurStudioLogos } = await csLib.getConfiguration('SFW Switch', {});
+    // const { blurStudioLogos } = await csLib.getConfiguration('SFW Switch', {});
+    const config = await csLib.getConfiguration('SFW Switch', {});
+    console.log('defineSfwStyles config', config)
 
     newStylesEl.innerText = `
       .scene-card-preview-video,
