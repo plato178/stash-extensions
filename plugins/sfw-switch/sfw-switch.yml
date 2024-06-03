@@ -5,8 +5,8 @@ url: https://github.com/plato178/stash-plugins
 ui:
   requires:
     - CommunityScriptsUILibrary
-  # css:
-  #   - sfw-switch.css
+  css:
+    - sfw-switch.css
   javascript:
     - sfw-switch.js
 settings:
