@@ -11,23 +11,11 @@
     const enableBlur = localStorage.getItem('sfw-enabled') === 'true'
     const config = await csLib.getConfiguration('sfw-switch', {});
 
-    const [baseStyles, optionStyles] = 
-      document.querySelectorAll('link[href*="sfw-switch"]')
-
+    const baseStyles = document.querySelector('link[href*="sfw-switch"]')
     baseStyles.classList.add('sfw-styles')
     baseStyles.disabled = !enableBlur
 
-    const optionStylesArray = Array.from(optionStyles)
-
-    for (const [key, value] of Object.entries(config)) {
-      const convertedOptionName = toDashCase(key)
-      const style = optionStylesArray.find(link => 
-        link.href.includes(convertedOptionName))
-      
-      if (style) {
-        style.disabled = !enableBlur && !!value
-      }
-    }
+    addOptionalStyles();
 
     waitForElementClass("plugin_sfw", () => {
       enableBlur
@@ -131,9 +119,49 @@
     return newStylesEl
   }
 
+  function createNewStyleElement() {
+    const newStylesEl = document.createElement('style')
+    newStylesEl.classList.add('sfw-styles')
+    return newStylesEl
+  }
+
   function attachSfwStyles(newStylesEl) {
-    const mainStyles = document.querySelector('link[href*="/css"]')
+    // const mainStyles = document.querySelector('link[href*="/css"]')
+    const mainStyles = 
+      [...document.querySelectorAll('.sfw-styles-option')]?.at(-1) || 
+      document.querySelector('.sfw-styles')
+
     mainStyles.insertAdjacentElement('afterend', newStylesEl)
+  }
+
+  async function addOptionalStyles(enableBlur) {
+    const config = await csLib.getConfiguration('sfw-switch', {});
+    _log('defineSfwStyles config', config)
+
+    addBlurStudioLogosStyles(enableBlur, config)
+  }
+
+  function addBlurStudioLogosStyles(enableBlur, { blurStudioLogos }) {
+    const newStylesEl = createNewStyleElement()
+    newStylesEl.classList.add('sfw-styles-option')
+    
+    newStylesEl.innerText = `
+      .image-thumbnail,
+      .scene-studio-overlay .image-thumbnail {
+        filter: blur(8px) !important;
+      }
+
+      .image-thumbnail:hover {
+        filter: blur(0px) !important;
+      }
+    `
+      .replace(/\n/g, '')
+      .replace(/\t/g, '')
+      .replace(/ /g, '')
+
+    newStylesEl.disabled = !enableBlur && blurStudioLogos
+
+    attachSfwStyles(newStylesEl)
   }
 
   function createSfwButton () {
@@ -184,6 +212,7 @@
     }
     
     sfwStyles.disabled = enableBlur
+    addOptionalStyles(enableBlur)
   }
 
   function waitForElementClass (elementId, callBack, time = 100) {
