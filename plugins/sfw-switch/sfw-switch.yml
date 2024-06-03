@@ -14,4 +14,8 @@ settings:
     displayName: Blur Studio Logos
     description: Optionally blur studio logos as well as scene thumbnails.
     type: BOOLEAN
+  debug:
+    displayName: Enable Debug Logs
+    description: Enable debug logs in browser console.
+    type: BOOLEAN
 
