@@ -1,26 +1,38 @@
 (async function () {
   const _log = (...args) => csLib.getConfiguration('sfw-switch', {})
     .then(config => (config.debug && console.log('[sfw-switch]', ...args)))
+
+  const toDashCase = str => str.replace(/\s/g, '-').toLowerCase()
   
   await initialiseStyles()
   createSfwButton()
   
   async function initialiseStyles() {
     const enableBlur = localStorage.getItem('sfw-enabled') === 'true'
+    const config = await csLib.getConfiguration('sfw-switch', {});
 
-    // const newStylesEl = await defineSfwStyles()
-    // attachSfwStyles(newStylesEl)
+    const [baseStyles, optionStyles] = 
+      document.querySelectorAll('link[href*="sfw-switch"]')
 
-    const newStylesEl = document.querySelector('link[href*="sfw-switch"]')
-    newStylesEl.classList.add('sfw-styles')
-    newStylesEl.disabled = !enableBlur
+    baseStyles.classList.add('sfw-styles')
+    baseStyles.disabled = !enableBlur
+
+    const optionStylesArray = Array.from(optionStyles)
+
+    for (const [key, value] of Object.entries(config)) {
+      const convertedOptionName = toDashCase(key)
+      const style = optionStylesArray.find(link => 
+        link.href.includes(convertedOptionName))
+      
+      if (style) {
+        style.disabled = !enableBlur && !!value
+      }
+    }
 
     waitForElementClass("plugin_sfw", () => {
       enableBlur
-        // ? document.getElementById("plugin_sfw").style.color = "#5cff00" // green
-        // : document.getElementById("plugin_sfw").style.color = "#f5f8fa"
         ? setSvgColour("#5cff00") // green
-        : setSvgColour("#f5f8fa")
+        : setSvgColour("#f5f8fa") // white
     })
   }
 
@@ -125,8 +137,7 @@
   }
 
   function createSfwButton () {
-    // if (!document.getElementById("plugin_sfw")) {
-    if (!document.querySelector(".plugin_sfw")) {
+    if (!document.getElementById("plugin_sfw")) {
       const pluginDiv = document.createElement('a');
       pluginDiv.classList.add("plugin_sfw", "nav-utility", 'nav-link')
 
@@ -144,17 +155,16 @@
       `
 
       waitForElementClass("navbar-buttons", () => {
-        const navBtnContainer = document.getElementsByClassName("navbar-buttons")[0];
+        const navBtnContainer = document
+          .getElementsByClassName("navbar-buttons")[0];
         
         if (navBtnContainer.childNodes[0].classList.contains('btn-primary')) {
-          navBtnContainer.insertBefore(pluginDiv, navBtnContainer.childNodes[1]);
+          navBtnContainer
+            .insertBefore(pluginDiv, navBtnContainer.childNodes[1]);
         } else {
-          navBtnContainer.insertBefore(pluginDiv, navBtnContainer.childNodes[0]);
+          navBtnContainer
+            .insertBefore(pluginDiv, navBtnContainer.childNodes[0]);
         }
-
-        // document
-        //   .getElementById("plugin_sfw")
-        //   .addEventListener("click", toggleSwitch, false);
 
         pluginDiv.addEventListener("click", toggleSwitch, false);
       })
@@ -162,17 +172,13 @@
   }
 
   function toggleSwitch () {
-    const sfwStyles = document.querySelector('.sfw-styles')
+    const sfwStyles = document.querySelectorAll('.sfw-styles')
     const enableBlur = localStorage.getItem('sfw-enabled') === 'true'
 
     if (!enableBlur) { // NSFW
-      // document.getElementById("plugin_sfw").style.color = "#5cff00"; // green
-      // document.querySelector(".plugin_sfw").style.color = "#5cff00"; // green
       setSvgColour("#5cff00") // green
       localStorage.setItem('sfw-enabled', 'true')
     } else { // SFW
-      // document.getElementById("plugin_sfw").style.color = "#f5f8fa"; // white
-      // document.querySelector(".plugin_sfw").style.color = "#f5f8fa"; // white
       setSvgColour("#f5f8fa") // white
       localStorage.removeItem('sfw-enabled')
     }

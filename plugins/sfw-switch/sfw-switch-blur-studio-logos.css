@@ -1,0 +1,8 @@
+.image-thumbnail,
+.scene-studio-overlay .image-thumbnail {
+  filter: blur(8px) !important;
+}
+
+.image-thumbnail:hover {
+  filter: blur(0px) !important;
+}
