@@ -214,13 +214,18 @@
     
     for (const style of sfwStyles) {
       if (style.tagName === 'link') {
-        style.disabled = enableBlur
+        style.disabled = !enableBlur
       } else {
         csLib.getConfiguration('sfw-switch', {})
           .then(config => {
             const configKey = style.dataset.configName
             const configValue = config[configKey]
-            style.disabled = !enableBlur && !configValue
+
+            if (!enableBlur) { // NSFW
+              style.disabled = true
+            } else { // SFW
+              style.disabled = !!configValue
+            }
           })
       }
     }
