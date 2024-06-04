@@ -168,7 +168,12 @@
       .replace(/\t/g, '')
       .replace(/ /g, '')
 
-    newStylesEl.disabled = !enableBlur && blurStudioLogos
+    if (!enableBlur) {
+      newStylesEl.disabled = true
+    } else {
+      newStylesEl.disabled = blurStudioLogos
+    }
+    
     _log('initialiseStyles newStylesEl.disabled', newStylesEl.disabled)
 
     attachSfwStyles(newStylesEl)
@@ -215,6 +220,7 @@
     _log('toggleSwitch enableBlur', enableBlur)
 
     for (const style of sfwStyles) {
+      _log('toggleSwitch link style.tagName', style.tagName)
       if (style.tagName === 'link') {
         style.disabled = !enableBlur
         _log('toggleSwitch link style.disabled', style.disabled)
