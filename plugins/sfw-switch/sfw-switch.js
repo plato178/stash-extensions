@@ -168,10 +168,12 @@
       .replace(/ /g, '')
 
     _log('addBlurStudioLogosStyles enableBlur', enableBlur)
-
+    
     if (!enableBlur) {
+      _log('addBlurStudioLogosStyles enableBlur === false', enableBlur === false)
       newStylesEl.disabled = true
     } else {
+      _log('addBlurStudioLogosStyles enableBlur === true', enableBlur === true)
       newStylesEl.disabled = config.blurStudioLogos
     }
     
