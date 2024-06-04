@@ -1,22 +1,27 @@
-(async function () {
+(function () {
+  'use strict'; 
+
   const _log = (...args) => csLib.getConfiguration('sfw-switch', {})
     .then(config => (config.debug && console.log('[sfw-switch]', ...args)))
 
   const toDashCase = str => str.replace(/\s/g, '-').toLowerCase()
   
-  await initialiseStyles()
+  initialiseStyles()
   createSfwButton()
   
   async function initialiseStyles() {
     const enableBlur = localStorage.getItem('sfw-enabled') === 'true'
-    const config = await csLib.getConfiguration('sfw-switch', {});
-
+    _log('initialiseStyles enableBlur', enableBlur)
+    // const config = await csLib.getConfiguration('sfw-switch', {});
+    
     const baseStyles = document.querySelector('link[href*="sfw-switch"]')
     baseStyles.classList.add('sfw-styles')
     baseStyles.disabled = !enableBlur
-
+    
+    _log('initialiseStyles baseStyles.disabled', baseStyles.disabled)
+    
     addOptionalStyles();
-
+    
     waitForElementClass("plugin_sfw", () => {
       enableBlur
         ? setSvgColour("#5cff00") // green
@@ -161,6 +166,7 @@
       .replace(/ /g, '')
 
     newStylesEl.disabled = !enableBlur && blurStudioLogos
+    _log('initialiseStyles newStylesEl.disabled', newStylesEl.disabled)
 
     attachSfwStyles(newStylesEl)
   }
