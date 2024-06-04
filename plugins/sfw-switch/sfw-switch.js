@@ -23,7 +23,7 @@
     
     _log('initialiseStyles baseStyles.disabled', baseStyles.disabled)
     
-    await addOptionalStyles();
+    await addOptionalStyles(enableBlur);
     
     waitForElementClass("plugin_sfw", () => {
       enableBlur
@@ -168,13 +168,15 @@
       .replace(/\t/g, '')
       .replace(/ /g, '')
 
+    _log('addBlurStudioLogosStyles enableBlur', enableBlur)
+
     if (!enableBlur) {
       newStylesEl.disabled = true
     } else {
       newStylesEl.disabled = blurStudioLogos
     }
     
-    _log('initialiseStyles newStylesEl.disabled', newStylesEl.disabled)
+    _log('addBlurStudioLogosStyles newStylesEl.disabled', newStylesEl.disabled)
 
     attachSfwStyles(newStylesEl)
   }
