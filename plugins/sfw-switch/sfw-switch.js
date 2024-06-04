@@ -221,7 +221,7 @@
     _log('toggleSwitch sfw-enabled raw', localStorage.getItem('sfw-enabled'))
 
     const sfwStyles = [...document.querySelectorAll('.sfw-styles')]
-    const enableBlur = !(localStorage.getItem('sfw-enabled') === 'true')
+    const enableBlur = localStorage.getItem('sfw-enabled') === 'true'
     _log('toggleSwitch enableBlur', enableBlur)
 
     for (const style of sfwStyles) {
@@ -236,11 +236,13 @@
         
         if (!enableBlur) { // NSFW
           style.disabled = true
+          _log('toggleSwitch enableBlur === false style.disabled', style.disabled)
         } else { // SFW
-          style.disabled = !!configValue
+          style.disabled = configValue
+          _log('toggleSwitch enableBlur === true style.disabled', style.disabled)
         }
 
-        _log('toggleSwitch style.disabled', style.disabled)
+        // _log('toggleSwitch style.disabled', style.disabled)
       }
     }
 
