@@ -1,21 +1,23 @@
-(function () {
+(async function () {
   'use strict'; 
 
-  const _log = (...args) => csLib.getConfiguration('sfw-switch', {})
-    .then(config => (config.debug && console.log('[sfw-switch]', ...args)))
-
-  const toDashCase = str => str.replace(/\s/g, '-').toLowerCase()
+  const config = await csLib.getConfiguration('sfw-switch', {})
   
+  const _log = (...args) => config.debug && console.log('[sfw-switch]', ...args)
+  
+  const toDashCase = str => str.replace(/\s/g, '-').toLowerCase()
+
   initialiseStyles()
   createSfwButton()
   
   async function initialiseStyles() {
+    _log('initialiseStyles config', config)
+
     _log('initialiseStyles sfw-enabled raw', 
       localStorage.getItem('sfw-enabled'))
 
     const enableBlur = localStorage.getItem('sfw-enabled') === 'true'
     _log('initialiseStyles enableBlur', enableBlur)
-    // const config = await csLib.getConfiguration('sfw-switch', {});
     
     const baseStyles = document.querySelector('link[href*="sfw-switch"]')
     baseStyles.classList.add('sfw-styles')
@@ -23,7 +25,7 @@
     
     _log('initialiseStyles baseStyles.disabled', baseStyles.disabled)
     
-    await addOptionalStyles(enableBlur);
+    addOptionalStyles(enableBlur);
     
     waitForElementClass("plugin_sfw", () => {
       enableBlur
@@ -142,14 +144,11 @@
     mainStyles.insertAdjacentElement('afterend', newStylesEl)
   }
 
-  async function addOptionalStyles(enableBlur) {
-    const config = await csLib.getConfiguration('sfw-switch', {});
-    _log('addOptionalStyles config', config)
-
-    addBlurStudioLogosStyles(enableBlur, config)
+  function addOptionalStyles(enableBlur) {
+    addBlurStudioLogosStyles(enableBlur)
   }
 
-  function addBlurStudioLogosStyles(enableBlur, { blurStudioLogos }) {
+  function addBlurStudioLogosStyles(enableBlur) {
     const newStylesEl = createNewStyleElement()
     newStylesEl.classList.add('sfw-styles-option')
     newStylesEl.setAttribute('data-config-name', 'blurStudioLogos')
@@ -173,7 +172,7 @@
     if (!enableBlur) {
       newStylesEl.disabled = true
     } else {
-      newStylesEl.disabled = blurStudioLogos
+      newStylesEl.disabled = config.blurStudioLogos
     }
     
     _log('addBlurStudioLogosStyles newStylesEl.disabled', newStylesEl.disabled)
@@ -227,19 +226,16 @@
         style.disabled = !enableBlur
         _log('toggleSwitch link style.disabled', style.disabled)
       } else {
-        csLib.getConfiguration('sfw-switch', {})
-          .then(config => {
-            const configKey = style.dataset.configName
-            const configValue = config[configKey]
+        const configKey = style.dataset.configName
+        const configValue = config[configKey]
 
-            if (!enableBlur) { // NSFW
-              style.disabled = true
-            } else { // SFW
-              style.disabled = !!configValue
-            }
+        if (!enableBlur) { // NSFW
+          style.disabled = true
+        } else { // SFW
+          style.disabled = !!configValue
+        }
 
-            _log('toggleSwitch style.disabled', style.disabled)
-          })
+        _log('toggleSwitch style.disabled', style.disabled)
       }
     }
 
