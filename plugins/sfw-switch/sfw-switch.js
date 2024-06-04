@@ -228,7 +228,7 @@
       _log('toggleSwitch link style.tagName', style.tagName)
 
       if (style.tagName.toLowerCase() === 'link') {
-        style.disabled = !enableBlur
+        style.disabled = enableBlur
         _log('toggleSwitch link style.disabled', style.disabled)
       } else if (style.tagName.toLowerCase() === 'style') {
         const configValue = config[style.dataset.configName]
