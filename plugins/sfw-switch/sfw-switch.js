@@ -123,7 +123,7 @@
         if (!enableBlur) { // NSFW
           style.disabled = true
         } else { // SFW
-          style.disabled = configValue
+          style.disabled = !configValue
         }
       }
     }
