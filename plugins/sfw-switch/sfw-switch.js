@@ -4,26 +4,16 @@
   const config = await csLib.getConfiguration('sfw-switch', {})
   
   const _log = (...args) => config.debug && console.log('[sfw-switch]', ...args)
-  
-  const toDashCase = str => str.replace(/\s/g, '-').toLowerCase()
 
   initialiseStyles()
   createSfwButton()
   
   async function initialiseStyles() {
-    _log('initialiseStyles config', config)
-
-    _log('initialiseStyles sfw-enabled raw', 
-      localStorage.getItem('sfw-enabled'))
-
     const enableBlur = localStorage.getItem('sfw-enabled') === 'true'
-    _log('initialiseStyles enableBlur', enableBlur)
     
     const baseStyles = document.querySelector('link[href*="sfw-switch"]')
     baseStyles.classList.add('sfw-styles')
     baseStyles.disabled = !enableBlur
-    
-    _log('initialiseStyles baseStyles.disabled', baseStyles.disabled)
     
     addOptionalStyles(enableBlur);
     
@@ -38,97 +28,6 @@
     document.getElementById("plugin_sfw_icon").style.fill = colour
   }
 
-  async function defineSfwStyles() {
-    const newStylesEl = document.createElement('style')
-
-    newStylesEl.classList.add('sfw-styles')
-
-    const config = await csLib.getConfiguration('sfw-switch', {});
-    _log('defineSfwStyles config', config)
-
-    newStylesEl.innerText = `
-      .scene-card-preview-video,
-      .scene-card-preview-image,
-      .image-card-preview-image,
-      ${config.blurStudioLogos ? '.image-thumbnail,' : ''}
-      .gallery-card-image,
-      .performer-card-image,
-      img.performer,
-      .movie-card-image,
-      .gallery .flexbin img,
-      .wall-item-media,
-      ${config.blurStudioLogos ? '.scene-studio-overlay .image-thumbnail,' : ''}
-      .image-card-preview-image,
-      #scene-details-container .text-input,
-      #scene-details-container .scene-header,
-      #scene-details-container .react-select__single-value,
-      .scene-details .pre,
-      #scene-tabs-tabpane-scene-file-info-panel span.col-8.text-truncate > a,
-      .gallery .flexbin img,
-      .movie-details .logo {
-        filter: blur(8px);
-      }
-
-      .scene-card-video {
-        filter: blur(13px);
-      }
-
-      .jw-video,
-      .jw-preview,
-      .jw-flag-floating,
-      .video-js:hover .vjs-poster,
-      video:hover,
-      .image-container,
-      .studio-logo,
-      .scene-cover {
-        filter: blur(20px);
-      }
-
-      .movie-card .text-truncate {
-        filter: blur(4px);
-      }
-      
-      .thumbnail-section:hover *,
-      .card:hover,
-      .card:hover .scene-studio-overlay,
-      .video-js:hover .vjs-poster,
-      video:hover,
-      .scene-header:hover>h3,
-      div:hover>.scene-header,
-      .studio-logo:hover,
-      .scene-cover:hover,
-      ${config.blurStudioLogos ? '.image-thumbnail:hover,' : ''}
-      .scene-card-preview:hover,
-      .scrubber-item:hover,
-
-      .image-image:hover,
-      div:hover>.image-header,
-      .gallery-image:hover,
-
-      .movie-images:hover,
-      .movie-details>div>h2:hover,
-
-      div:hover>.gallery-header,
-      table>tbody>tr>td:hover>a>img.w-100,
-
-      img.performer:hover,
-
-      .studio-details .logo:hover,
-      .studio-details:hover>div>h2,
-
-      .logo-container>.logo:hover,
-      .logo-container:hover>h2 {
-        filter: blur(0px) !important;
-      }
-
-      `
-      .replace(/\n/g, '')
-      .replace(/\t/g, '')
-      .replace(/ /g, '')
-
-    return newStylesEl
-  }
-
   function createNewStyleElement() {
     const newStylesEl = document.createElement('style')
     newStylesEl.classList.add('sfw-styles')
@@ -136,7 +35,6 @@
   }
 
   function attachSfwStyles(newStylesEl) {
-    // const mainStyles = document.querySelector('link[href*="/css"]')
     const mainStyles = 
       [...document.querySelectorAll('.sfw-styles-option')]?.at(-1) || 
       document.querySelector('.sfw-styles')
@@ -168,18 +66,12 @@
       .replace(/ /g, '')
 
     attachSfwStyles(newStylesEl)
-
-    _log('addBlurStudioLogosStyles enableBlur', enableBlur)
     
     if (!enableBlur) {
-      _log('addBlurStudioLogosStyles enableBlur === false', enableBlur === false)
       newStylesEl.disabled = true
     } else {
-      _log('addBlurStudioLogosStyles enableBlur === true', enableBlur === true)
       newStylesEl.disabled = config.blurStudioLogos
     }
-    
-    _log('addBlurStudioLogosStyles newStylesEl.disabled', newStylesEl.disabled)
   }
 
   function createSfwButton () {
@@ -218,31 +110,21 @@
   }
 
   function toggleSwitch () {
-    _log('toggleSwitch sfw-enabled raw', localStorage.getItem('sfw-enabled'))
-
     const sfwStyles = [...document.querySelectorAll('.sfw-styles')]
     const enableBlur = localStorage.getItem('sfw-enabled') === 'true'
-    _log('toggleSwitch enableBlur', enableBlur)
 
     for (const style of sfwStyles) {
-      _log('toggleSwitch link style.tagName', style.tagName)
 
       if (style.tagName.toLowerCase() === 'link') {
         style.disabled = enableBlur
-        _log('toggleSwitch link style.disabled', style.disabled)
       } else if (style.tagName.toLowerCase() === 'style') {
         const configValue = config[style.dataset.configName]
-        _log('toggleSwitch configValue', configValue)
         
         if (!enableBlur) { // NSFW
           style.disabled = true
-          _log('toggleSwitch enableBlur === false style.disabled', style.disabled)
         } else { // SFW
           style.disabled = configValue
-          _log('toggleSwitch enableBlur === true style.disabled', style.disabled)
         }
-
-        // _log('toggleSwitch style.disabled', style.disabled)
       }
     }
 
