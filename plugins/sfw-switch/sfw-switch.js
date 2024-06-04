@@ -167,6 +167,8 @@
       .replace(/\t/g, '')
       .replace(/ /g, '')
 
+    attachSfwStyles(newStylesEl)
+
     _log('addBlurStudioLogosStyles enableBlur', enableBlur)
     
     if (!enableBlur) {
@@ -178,8 +180,6 @@
     }
     
     _log('addBlurStudioLogosStyles newStylesEl.disabled', newStylesEl.disabled)
-
-    attachSfwStyles(newStylesEl)
   }
 
   function createSfwButton () {
