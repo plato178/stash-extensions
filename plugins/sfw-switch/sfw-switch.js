@@ -212,10 +212,12 @@
   function toggleSwitch () {
     const sfwStyles = [...document.querySelectorAll('.sfw-styles')]
     const enableBlur = localStorage.getItem('sfw-enabled') === 'true'
+    _log('toggleSwitch enableBlur', enableBlur)
 
     for (const style of sfwStyles) {
       if (style.tagName === 'link') {
         style.disabled = !enableBlur
+        _log('toggleSwitch link style.disabled', style.disabled)
       } else {
         csLib.getConfiguration('sfw-switch', {})
           .then(config => {
@@ -227,6 +229,8 @@
             } else { // SFW
               style.disabled = !!configValue
             }
+
+            _log('toggleSwitch style.disabled', style.disabled)
           })
       }
     }
