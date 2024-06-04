@@ -213,14 +213,6 @@
     const sfwStyles = [...document.querySelectorAll('.sfw-styles')]
     const enableBlur = localStorage.getItem('sfw-enabled') === 'true'
 
-    if (!enableBlur) { // NSFW
-      setSvgColour("#5cff00") // green
-      localStorage.setItem('sfw-enabled', 'true')
-    } else { // SFW
-      setSvgColour("#f5f8fa") // white
-      localStorage.removeItem('sfw-enabled')
-    }
-    
     for (const style of sfwStyles) {
       if (style.tagName === 'link') {
         style.disabled = !enableBlur
@@ -237,6 +229,14 @@
             }
           })
       }
+    }
+
+    if (!enableBlur) { // NSFW
+      setSvgColour("#5cff00") // green
+      localStorage.setItem('sfw-enabled', 'true')
+    } else { // SFW
+      setSvgColour("#f5f8fa") // white
+      localStorage.removeItem('sfw-enabled')
     }
   }
 
