@@ -10,6 +10,9 @@
   createSfwButton()
   
   async function initialiseStyles() {
+    _log('initialiseStyles sfw-enabled raw', 
+      localStorage.getItem('sfw-enabled'))
+
     const enableBlur = localStorage.getItem('sfw-enabled') === 'true'
     _log('initialiseStyles enableBlur', enableBlur)
     // const config = await csLib.getConfiguration('sfw-switch', {});
@@ -20,7 +23,7 @@
     
     _log('initialiseStyles baseStyles.disabled', baseStyles.disabled)
     
-    addOptionalStyles();
+    await addOptionalStyles();
     
     waitForElementClass("plugin_sfw", () => {
       enableBlur
@@ -141,7 +144,7 @@
 
   async function addOptionalStyles(enableBlur) {
     const config = await csLib.getConfiguration('sfw-switch', {});
-    _log('defineSfwStyles config', config)
+    _log('addOptionalStyles config', config)
 
     addBlurStudioLogosStyles(enableBlur, config)
   }
