@@ -224,7 +224,7 @@
 
     for (const style of sfwStyles) {
       _log('toggleSwitch link style.tagName', style.tagName)
-      if (style.tagName === 'link') {
+      if (style.tagName.toLowerCase() === 'link') {
         style.disabled = !enableBlur
         _log('toggleSwitch link style.disabled', style.disabled)
       } else {
