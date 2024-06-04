@@ -218,19 +218,22 @@
   }
 
   function toggleSwitch () {
+    _log('toggleSwitch sfw-enabled raw', localStorage.getItem('sfw-enabled'))
+
     const sfwStyles = [...document.querySelectorAll('.sfw-styles')]
     const enableBlur = localStorage.getItem('sfw-enabled') === 'true'
     _log('toggleSwitch enableBlur', enableBlur)
 
     for (const style of sfwStyles) {
       _log('toggleSwitch link style.tagName', style.tagName)
+
       if (style.tagName.toLowerCase() === 'link') {
         style.disabled = !enableBlur
         _log('toggleSwitch link style.disabled', style.disabled)
-      } else {
-        const configKey = style.dataset.configName
-        const configValue = config[configKey]
-
+      } else if (style.tagName.toLowerCase() === 'style') {
+        const configValue = config[style.dataset.configName]
+        _log('toggleSwitch configValue', configValue)
+        
         if (!enableBlur) { // NSFW
           style.disabled = true
         } else { // SFW
