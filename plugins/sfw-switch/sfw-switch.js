@@ -221,7 +221,7 @@
     _log('toggleSwitch sfw-enabled raw', localStorage.getItem('sfw-enabled'))
 
     const sfwStyles = [...document.querySelectorAll('.sfw-styles')]
-    const enableBlur = localStorage.getItem('sfw-enabled') === 'true'
+    const enableBlur = !(localStorage.getItem('sfw-enabled') === 'true')
     _log('toggleSwitch enableBlur', enableBlur)
 
     for (const style of sfwStyles) {
