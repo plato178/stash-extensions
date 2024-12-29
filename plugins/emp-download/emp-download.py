@@ -5,7 +5,7 @@ from stashapi.stashapp import StashInterface
 import json
 import sys
 
-DOWNLOADING_TAG_ID = '2723'
+DOWNLOADING_TAG_NAME = "KG: Downloading"
 
 def get_stash_interface(json_input):
     FRAGMENT_SERVER = json_input["server_connection"]
@@ -19,7 +19,9 @@ def send_emp_url_to_torrent(json_input, settings, scene_id):
     # log.debug("send_emp_url_to_torrent scene: %s " % (scene,))
 
     # Check if the scene has the downloading tag or is Organized.
-    matching_tags = [t for t in scene["tags"] if t.get("id") == DOWNLOADING_TAG_ID]
+    downloading_tag_id = stash.find_tag(DOWNLOADING_TAG_NAME)['id']
+    matching_tags = [t for t in scene["tags"] if t.get("id") == downloading_tag_id]
+
     if any(matching_tags) == False and scene["organized"] == False:
         emp_url = [u for u in scene["urls"] if "empornium.is" in u.lower()][0]
 
@@ -30,7 +32,7 @@ def send_emp_url_to_torrent(json_input, settings, scene_id):
         download_file(emp_url, settings["torrentFilesPath"] + "/" + torrent_filename)
 
         # Update scene with downloading tag.
-        stash.update_scene({"id": scene_id, "tag_ids": [DOWNLOADING_TAG_ID]})
+        stash.update_scene({"id": scene_id, "tag_ids": [downloading_tag_id]})
     else:
         log.debug("Scene is already downloading or organized. Skipping.")
 
@@ -42,7 +44,7 @@ def download_file(url, output_path):
                 file.write(chunk)
         log.info(f"File downloaded successfully to {output_path}")
     else:
-        log.info(f"Failed to download file. Status code: {response.status_code}")
+        log.warning(f"Failed to download file. Status code: {response.status_code}")
 
 def main():
     json_input = json.loads(sys.stdin.read())
@@ -52,10 +54,11 @@ def main():
 
     # log.debug("config: %s " % (config,))
     # log.debug("args: %s " % (json_input["args"],))
-    # log.debug("plugins: %s " % (config["plugins"],))
+    log.debug("plugins: %s " % (config["plugins"],))
 
     settings = {
         "disableAddEmpUrlHook": False,
+        "downloadingTagName": "KG: Downloading",
         "torrentFilesPath": "/torrent-files",
     }
 
