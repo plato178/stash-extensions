@@ -1,28 +1,23 @@
 name: EMP Download
 description: Add EMP download URL to torrent when added to Stash scene.
-version: 0.1.0
-url: https://github.com/plato178/plato178-stash-extensions/
+version: 0.2.0
+url: https://github.com/plato178/stash-extensions/
 exec:
   - python
   - "{pluginDir}/emp-download.py"
 interface: raw
 settings:
   disableAddEmpUrlHook:
-    displayName: Disable the Add EMP URL hook.
+    displayName: Disable Add EMP URL hook
     type: BOOLEAN
   downloadingTagName:
-    displayName: Tag name for downloading torrents.
+    displayName: Tag name for downloading torrents
     type: STRING
   torrentFilesPath:
-    displayName: Torrent File path.
+    displayName: Torrent File path
     type: STRING
 hooks:
   - name: Add EMP URL
     description: Add EMP URL to torrent when added to Stash scene.
     triggeredBy:
       - Scene.Update.Post
-tasks:
-  - name: Add EMP URL
-    description: Add EMP URL to torrent when added to Stash scene.
-    defaultArgs:
-      mode: sendEmpUrlToTorrent

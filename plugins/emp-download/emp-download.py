@@ -5,8 +5,6 @@ from stashapi.stashapp import StashInterface
 import json
 import sys
 
-DOWNLOADING_TAG_NAME = "KG: Downloading"
-
 def get_stash_interface(json_input):
     FRAGMENT_SERVER = json_input["server_connection"]
     stash = StashInterface(FRAGMENT_SERVER)
@@ -19,7 +17,7 @@ def send_emp_url_to_torrent(json_input, settings, scene_id):
     # log.debug("send_emp_url_to_torrent scene: %s " % (scene,))
 
     # Check if the scene has the downloading tag or is Organized.
-    downloading_tag_id = stash.find_tag(DOWNLOADING_TAG_NAME)['id']
+    downloading_tag_id = stash.find_tag(settings["downloadingTagName"])['id']
     matching_tags = [t for t in scene["tags"] if t.get("id") == downloading_tag_id]
 
     if any(matching_tags) == False and scene["organized"] == False:
@@ -28,7 +26,7 @@ def send_emp_url_to_torrent(json_input, settings, scene_id):
         studio_id = scene["studio"]["id"]
         studio_name = stash.find_studio(studio_id)["name"]
         torrent_filename = studio_name + " - " + scene["date"] + " - " + scene["title"] + ".torrent"
-        
+
         download_file(emp_url, settings["torrentFilesPath"] + "/" + torrent_filename)
 
         # Update scene with downloading tag.
@@ -52,26 +50,28 @@ def main():
     stash = get_stash_interface(json_input)
     config = stash.get_configuration()
 
-    # log.debug("config: %s " % (config,))
-    # log.debug("args: %s " % (json_input["args"],))
-    log.debug("plugins: %s " % (config["plugins"],))
-
     settings = {
         "disableAddEmpUrlHook": False,
-        "downloadingTagName": "KG: Downloading",
-        "torrentFilesPath": "/torrent-files",
+        "downloadingTagName": "",
+        "torrentFilesPath": "",
     }
 
-    # if "emp-download" in config["plugins"]:
-        # settings.update(config["plugins"]["emp-download"])
-      
+    if "emp-download" in config["plugins"]:
+        settings.update(config["plugins"]["emp-download"])
+
+    log.debug("settings: %s " % (settings,))
+
+    if settings["disableAddEmpUrlHook"] == True:
+        log.warning("Hook is disabled. Exiting.")
+        return
+
     if "hookContext" in json_input["args"]:
         _id = json_input["args"]["hookContext"]["id"]
         _type = json_input["args"]["hookContext"]["type"]
-        
+
         log.debug("_id: %s " % (_id,))
         log.debug("_type: %s " % (_type,))
-        
+
         if _type == "Scene.Update.Post" and not settings["disableAddEmpUrlHook"]:
             send_emp_url_to_torrent(json_input, settings, _id)
 
