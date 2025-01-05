@@ -14,7 +14,7 @@ def get_stash_interface(json_input):
 
 def get_stashdb_api_key(stash):
   config = stash.get_configuration()
-  log.debug("get_stashdb_api_key config.general: %s " % (config["general"],))
+  return config["general"]["stashBoxes"]
 
 def sync_performer(json_input, performer_id, is_favorite):
   stash = get_stash_interface(json_input)
@@ -54,7 +54,7 @@ def main():
   if "hookContext" in json_input["args"]:
     _id = json_input["args"]["hookContext"]["id"]
     _type = json_input["args"]["hookContext"]["type"]
-    is_favorite = json_input["args"]["hookContext"]["favorite"]
+    # is_favorite = json_input["args"]["hookContext"]["favorite"]
 
     log.debug("hookContext: %s " % (json_input["args"]["hookContext"],))
     log.debug("_id: %s " % (_id,))
@@ -63,8 +63,8 @@ def main():
   # if settings["disableSyncHooks"] == False:
   #   if _type == "Studio.Update.Post":
   #     sync_studio(json_input, _id, is_favorite)
-  #   if _type == "Performer.Update.Post":
-  #     sync_performer(json_input, _id, is_favorite)
+    # if _type == "Performer.Update.Post":
+      # sync_performer(json_input, _id, is_favorite)
 
 if __name__ == "__main__":
   main()
