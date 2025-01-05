@@ -46,7 +46,7 @@ def sync_performer(json_input, performer_id, is_favorite):
   else:
     log.warning("Performer is missing StashDB ID. Skipping.")
 
-def sync_to_stashdb(query, stashdb_config, type, id, is_favorite):
+def sync_to_stashdb(mutation, stashdb_config, type, id, is_favorite):
   headers = {
     "Content-Type": "application/json",
     "ApiKey": stashdb_config["api_key"],
