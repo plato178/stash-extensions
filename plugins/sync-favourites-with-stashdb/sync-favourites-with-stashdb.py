@@ -5,40 +5,38 @@ from stashapi.stashapp import StashInterface
 import json
 import sys
 
+STASHDB_ENDPOINT = "https://stashdb.org/graphql"
+
 def get_stash_interface(json_input):
   FRAGMENT_SERVER = json_input["server_connection"]
   stash = StashInterface(FRAGMENT_SERVER)
   return stash
 
-def send_emp_url_to_torrent(json_input, settings, scene_id):
+def get_stashdb_api_key(stash):
+  config = stash.get_configuration()
+  log.debug("get_stashdb_api_key config.general: %s " % (config["general"],))
+
+def sync_performer(json_input, performer_id, is_favorite):
   stash = get_stash_interface(json_input)
 
-  scene = stash.find_scene(scene_id)
+  performer = stash.find_performer(performer_id)
   # log.debug("send_emp_url_to_torrent scene: %s " % (scene,))
 
-  # Check if the scene has the downloading tag or is Organized.
-  downloading_tag_id = stash.find_tag(settings["downloadingTagName"])['id']
-  matching_tags = [t for t in scene["tags"] if t.get("id") == downloading_tag_id]
+  # Check if the scene has a StashDB ID.
+  stashdb_id = [s for s in performer["stash_ids"] if t.get("endpoint") == STASHDB_ENDPOINT][0]
 
-  if any(matching_tags) == False and scene["organized"] == False:
-    emp_url = [u for u in scene["urls"] if "empornium.is" in u.lower()][0]
-
-    studio_id = scene["studio"]["id"]
-    studio_name = stash.find_studio(studio_id)["name"]
-    torrent_filename = studio_name + " - " + scene["date"] + " - " + scene["title"] + ".torrent"
-
-    download_file(emp_url, settings["torrentFilesPath"] + "/" + torrent_filename)
-
-    # Update scene with downloading tag.
-    stash.update_scene({"id": scene_id, "tag_ids": [downloading_tag_id]})
+  if len(stashdb_id) > 0:
+    get_stashdb_api_key(stash)
+    log.debug("Performer has StashDB ID: %s " % (stashdb_id,))
   else:
-      log.debug("Scene is already downloading or organized. Skipping.")
+    log.warning("Performer is missing StashDB ID. Skipping.")
 
 def main():
   json_input = json.loads(sys.stdin.read())
 
   stash = get_stash_interface(json_input)
   config = stash.get_configuration()
+  log.debug("config: %s " % (config,))
 
   settings = {
     "disableSyncHooks": False,
@@ -56,6 +54,7 @@ def main():
   if "hookContext" in json_input["args"]:
     _id = json_input["args"]["hookContext"]["id"]
     _type = json_input["args"]["hookContext"]["type"]
+    is_favorite = json_input["args"]["hookContext"]["favorite"]
 
     log.debug("hookContext: %s " % (json_input["args"]["hookContext"],))
     log.debug("_id: %s " % (_id,))
@@ -63,9 +62,9 @@ def main():
 
   # if settings["disableSyncHooks"] == False:
   #   if _type == "Studio.Update.Post":
-  #     sync_studio(json_input, settings, _id)
+  #     sync_studio(json_input, _id, is_favorite)
   #   if _type == "Performer.Update.Post":
-  #     sync_perfomer(json_input, settings, _id)
+  #     sync_performer(json_input, _id, is_favorite)
 
 if __name__ == "__main__":
   main()
