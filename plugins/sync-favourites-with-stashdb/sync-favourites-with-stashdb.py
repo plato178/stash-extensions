@@ -37,7 +37,7 @@ def sync_performer(json_input, performer_id, is_favorite):
     mutation SetFavourite($input: PerformerUpdateInput!) {
       performerUpdate(input: $input) {
         id
-        favorite
+        is_favorite
       }
     }
     """
@@ -54,7 +54,7 @@ def sync_to_stashdb(mutation, stashdb_config, type, id, is_favorite):
 
   input_data = {
     "id": id,
-    "favorite": is_favorite,
+    "is_favorite": is_favorite,
   }
 
   variables = {"input": input_data}
