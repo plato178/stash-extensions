@@ -49,12 +49,11 @@ def sync_to_stashdb(mutation, stashdb_config, type, id, is_favorite):
     "ApiKey": stashdb_config["api_key"],
   }
 
-  input_data = {
+  variables = {
     "id": id,
     "favorite": is_favorite,
   }
 
-  variables = {"input": input_data}
   try:
     response = requests.post(
       stashdb_config["endpoint"],
