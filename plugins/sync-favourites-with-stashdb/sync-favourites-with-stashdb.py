@@ -65,7 +65,6 @@ def sync_to_stashdb(mutation, stashdb_config, type, id, is_favorite):
       if "errors" in result:
         log.warning(f"Failed to update {type} ID {id}: {result['errors']}")
       else:
-        created_count += 1
         log.info(f"Updated {type} ID {id} as favorite = {is_favorite} successfully.")
     else:
       log.warning(f"Failed to update {type} ID {id}. HTTP {response.status_code}: {response.text}")
