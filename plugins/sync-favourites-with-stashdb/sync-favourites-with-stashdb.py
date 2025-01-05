@@ -12,9 +12,10 @@ def get_stash_interface(json_input):
   stash = StashInterface(FRAGMENT_SERVER)
   return stash
 
-def get_stashdb_api_key(stash):
+def get_stashdb_config(stash):
   config = stash.get_configuration()
-  return config["general"]["stashBoxes"]
+  stash_boxes = config["general"]["stashBoxes"] 
+  return [a for a in stash_boxes if a.get("endpoint") == STASHDB_ENDPOINT][0]
 
 def sync_performer(json_input, performer_id, is_favorite):
   stash = get_stash_interface(json_input)
@@ -29,10 +30,51 @@ def sync_performer(json_input, performer_id, is_favorite):
 
   if len(stashdb_id) > 0:
     log.debug("sync_performer Performer has StashDB ID: %s " % (stashdb_id,))
-    stashdb_api_key = get_stashdb_api_key(stash)
-    log.debug("sync_performer stashdb_api_key: %s " % (stashdb_api_key,))
+    stashdb_config = get_stashdb_config(stash)
+    log.debug("sync_performer stashdb_config: %s " % (stashdb_config,))
+
+    mutation = """
+    mutation SetFavourite($input: PerformerUpdateInput!) {
+      performerUpdate(input: $input) {
+        id
+        favorite
+      }
+    }
+    """
+
+    sync_to_stashdb(mutation, stashdb_config, "performer" performer_id, is_favorite)
   else:
     log.warning("Performer is missing StashDB ID. Skipping.")
+
+def sync_to_stashdb(query, stashdb_config, type, id, is_favorite):
+  headers = {
+    "Content-Type": "application/json",
+    "ApiKey": stashdb_config["api_key"],
+  }
+
+  input_data = {
+    "id": id,
+    "favorite": is_favorite,
+  }
+
+  variables = {"input": input_data}
+  try:
+    response = requests.post(
+      stashdb_config["endpoint"],
+      json={"query": mutation, "variables": variables},
+      headers=headers,
+    )
+    if response.status_code == 200:
+      result = response.json()
+      if "errors" in result:
+        log.warning(f"Failed to update {type} ID {id}: {result['errors']}")
+      else:
+        created_count += 1
+        log.info(f"Updated {type} ID {id} as favorite = {is_favorite} successfully.")
+    else:
+      log.warning(f"Failed to update {type} ID {id}. HTTP {response.status_code}: {response.text}")
+  except requests.exceptions.RequestException as e:
+    log.error(f"Exception while updating {type} ID {id}.: {e}")
 
 def main():
   json_input = json.loads(sys.stdin.read())
