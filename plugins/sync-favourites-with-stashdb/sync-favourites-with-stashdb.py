@@ -109,10 +109,6 @@ def main():
 
   log.debug("settings: %s " % (settings,))
 
-  if settings["disableSyncHooks"] == True:
-    log.warning("Hooks are disabled. Exiting.")
-    return
-
   if "hookContext" in json_input["args"]:
     _id = json_input["args"]["hookContext"]["id"]
     _type = json_input["args"]["hookContext"]["type"]
