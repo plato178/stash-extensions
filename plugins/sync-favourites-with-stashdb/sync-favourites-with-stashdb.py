@@ -23,11 +23,12 @@ def sync_performer(json_input, performer_id, is_favorite):
   # log.debug("send_emp_url_to_torrent scene: %s " % (scene,))
 
   # Check if the scene has a StashDB ID.
-  stashdb_id = [s for s in performer["stash_ids"] if t.get("endpoint") == STASHDB_ENDPOINT][0]
+  stashdb_id = [s for s in performer["stash_ids"] if s.get("endpoint") == STASHDB_ENDPOINT][0]
+  log.debug("sync_performer stashdb_id: %s " % (stashdb_id,))
 
   if len(stashdb_id) > 0:
     get_stashdb_api_key(stash)
-    log.debug("Performer has StashDB ID: %s " % (stashdb_id,))
+    log.debug("sync_performer Performer has StashDB ID: %s " % (stashdb_id,))
   else:
     log.warning("Performer is missing StashDB ID. Skipping.")
 
