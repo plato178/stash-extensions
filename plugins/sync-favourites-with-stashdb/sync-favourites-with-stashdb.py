@@ -42,7 +42,7 @@ def sync_performer(json_input, performer_id, is_favorite):
     }
     """
 
-    sync_to_stashdb(mutation, stashdb_config, "performer" performer_id, is_favorite)
+    sync_to_stashdb(mutation, stashdb_config, "performer", performer_id, is_favorite)
   else:
     log.warning("Performer is missing StashDB ID. Skipping.")
 
