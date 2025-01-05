@@ -121,9 +121,9 @@ def main():
     log.debug("_id: %s " % (_id,))
     log.debug("_type: %s " % (_type,))
 
-    if _type == "Performer.Update.Post" and if settings["disablePerformerSyncHook"] == False:
+    if _type == "Performer.Update.Post" and settings["disablePerformerSyncHook"] == False:
       sync_performer(json_input, _id, is_favorite)
-    if _type == "Studio.Update.Post" and if settings["disableStudioSyncHook"] == False:
+    if _type == "Studio.Update.Post" and settings["disableStudioSyncHook"] == False:
       sync_studio(json_input, _id, is_favorite)
 
 if __name__ == "__main__":
