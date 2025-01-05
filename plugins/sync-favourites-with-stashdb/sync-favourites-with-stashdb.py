@@ -21,17 +21,13 @@ def sync_performer(json_input, performer_id, is_favorite):
   stash = get_stash_interface(json_input)
 
   performer = stash.find_performer(performer_id)
-  # log.debug("send_emp_url_to_torrent scene: %s " % (scene,))
 
-  # Check if the scene has a StashDB ID.
+  # Check if the performer has a StashDB ID.
   matching_stashdb_ids = [s for s in performer["stash_ids"] if s.get("endpoint") == STASHDB_ENDPOINT]
   stashdb_id = matching_stashdb_ids[0]["stash_id"]
-  log.debug("sync_performer stashdb_id: %s " % (stashdb_id,))
 
   if len(stashdb_id) > 0:
-    log.debug("sync_performer Performer has StashDB ID: %s " % (stashdb_id,))
     stashdb_config = get_stashdb_config(stash)
-    log.debug("sync_performer stashdb_config: %s " % (stashdb_config,))
 
     mutation = """
     mutation FavoritePerformer($id: ID!, $favorite: Boolean!) {
@@ -42,6 +38,31 @@ def sync_performer(json_input, performer_id, is_favorite):
     sync_to_stashdb(mutation, stashdb_config, "performer", stashdb_id, is_favorite)
   else:
     log.warning("Performer is missing StashDB ID. Skipping.")
+
+def sync_studio(json_input, studio_id, is_favorite):
+  stash = get_stash_interface(json_input)
+
+  studio = stash.find_studio(studio_id)
+
+  # Check if the studio has a StashDB ID.
+  matching_stashdb_ids = [s for s in studio["stash_ids"] if s.get("endpoint") == STASHDB_ENDPOINT]
+  stashdb_id = matching_stashdb_ids[0]["stash_id"]
+  log.debug("sync_studio stashdb_id: %s " % (stashdb_id,))
+
+  if len(stashdb_id) > 0:
+    log.debug("sync_studio Performer has StashDB ID: %s " % (stashdb_id,))
+    stashdb_config = get_stashdb_config(stash)
+    log.debug("sync_studio stashdb_config: %s " % (stashdb_config,))
+
+    mutation = """
+    mutation FavoriteStudio($id: ID!, $favorite: Boolean!) {
+      favoriteStudio(id: $id, favorite: $favorite)
+    }
+    """
+
+    sync_to_stashdb(mutation, stashdb_config, "studio", stashdb_id, is_favorite)
+  else:
+    log.warning("Studio is missing StashDB ID. Skipping.")
 
 def sync_to_stashdb(mutation, stashdb_config, type, id, is_favorite):
   headers = {
@@ -96,13 +117,12 @@ def main():
     _type = json_input["args"]["hookContext"]["type"]
     is_favorite = json_input["args"]["hookContext"]["input"]["favorite"]
 
-    # log.debug("hookContext: %s " % (json_input["args"]["hookContext"],))
     log.debug("_id: %s " % (_id,))
     log.debug("_type: %s " % (_type,))
 
     if settings["disableSyncHooks"] == False:
-    #   if _type == "Studio.Update.Post":
-    #     sync_studio(json_input, _id, is_favorite)
+      if _type == "Studio.Update.Post":
+        sync_studio(json_input, _id, is_favorite)
       if _type == "Performer.Update.Post":
         sync_performer(json_input, _id, is_favorite)
 
