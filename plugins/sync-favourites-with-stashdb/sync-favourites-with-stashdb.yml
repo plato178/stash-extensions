@@ -1,14 +1,17 @@
 name: Sync Favourites With StashDB
 description: Sync favourite Performers and Studios with StashDB.
-version: 0.0.0
+version: 0.1.0
 url: https://github.com/plato178/stash-extensions/
 exec:
   - python
   - "{pluginDir}/sync-favourites-with-stashdb.py"
 interface: raw
 settings:
-  disableSyncHooks:
-    displayName: Disable Sync hooks
+  disablePerformerSyncHook:
+    displayName: Disable Performer sync hook
+    type: BOOLEAN
+  disableStudioSyncHook:
+    displayName: Disable Studio sync hook
     type: BOOLEAN
 hooks:
   - name: Sync Studio Favourites

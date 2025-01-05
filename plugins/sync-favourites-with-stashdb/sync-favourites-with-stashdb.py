@@ -100,7 +100,8 @@ def main():
   log.debug("config: %s " % (config,))
 
   settings = {
-    "disableSyncHooks": False,
+    "disablePerformerSyncHook": False,
+    "disableStudioSyncHook": False,
   }
 
   if "sync-favourites-with-stashdb" in config["plugins"]:
@@ -120,11 +121,10 @@ def main():
     log.debug("_id: %s " % (_id,))
     log.debug("_type: %s " % (_type,))
 
-    if settings["disableSyncHooks"] == False:
-      if _type == "Studio.Update.Post":
-        sync_studio(json_input, _id, is_favorite)
-      if _type == "Performer.Update.Post":
-        sync_performer(json_input, _id, is_favorite)
+    if _type == "Performer.Update.Post" and if settings["disablePerformerSyncHook"] == False:
+      sync_performer(json_input, _id, is_favorite)
+    if _type == "Studio.Update.Post" and if settings["disableStudioSyncHook"] == False:
+      sync_studio(json_input, _id, is_favorite)
 
 if __name__ == "__main__":
   main()
