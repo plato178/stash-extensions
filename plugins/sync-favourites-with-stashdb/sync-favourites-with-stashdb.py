@@ -97,7 +97,6 @@ def main():
 
   stash = get_stash_interface(json_input)
   config = stash.get_configuration()
-  log.debug("config: %s " % (config,))
 
   settings = {
     "disablePerformerSyncHook": False,
@@ -121,6 +120,8 @@ def main():
       sync_performer(json_input, _id, is_favorite)
     if _type == "Studio.Update.Post" and settings["disableStudioSyncHook"] == False:
       sync_studio(json_input, _id, is_favorite)
+    else:
+      log.debug("One or more hooks are disabled. Skipping.")
 
 if __name__ == "__main__":
   main()
