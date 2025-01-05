@@ -54,17 +54,17 @@ def main():
   if "hookContext" in json_input["args"]:
     _id = json_input["args"]["hookContext"]["id"]
     _type = json_input["args"]["hookContext"]["type"]
-    # is_favorite = json_input["args"]["hookContext"]["favorite"]
+    is_favorite = json_input["args"]["hookContext"]["input"]["favorite"]
 
-    log.debug("hookContext: %s " % (json_input["args"]["hookContext"],))
+    # log.debug("hookContext: %s " % (json_input["args"]["hookContext"],))
     log.debug("_id: %s " % (_id,))
     log.debug("_type: %s " % (_type,))
 
-  # if settings["disableSyncHooks"] == False:
-  #   if _type == "Studio.Update.Post":
-  #     sync_studio(json_input, _id, is_favorite)
-    # if _type == "Performer.Update.Post":
-      # sync_performer(json_input, _id, is_favorite)
+    if settings["disableSyncHooks"] == False:
+    #   if _type == "Studio.Update.Post":
+    #     sync_studio(json_input, _id, is_favorite)
+      if _type == "Performer.Update.Post":
+        sync_performer(json_input, _id, is_favorite)
 
 if __name__ == "__main__":
   main()
