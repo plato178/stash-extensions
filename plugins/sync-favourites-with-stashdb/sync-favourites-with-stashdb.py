@@ -121,7 +121,7 @@ def main():
     if _type == "Studio.Update.Post" and settings["disableStudioSyncHook"] == False:
       sync_studio(json_input, _id, is_favorite)
     else:
-      log.debug("One or more hooks are disabled. Skipping.")
+      log.warning("One or more hooks are disabled. Skipping.")
 
 if __name__ == "__main__":
   main()
