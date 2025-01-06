@@ -76,7 +76,8 @@
                     return;
                 }
                 const selectedStashboxIndex = selectedStashbox.selectedIndex;
-                const existingStashId = data.stash_ids.find(o => o.endpoint === stashBoxes[selectedStashboxIndex].endpoint);
+                // const existingStashId = data.stash_ids.find(o => o.endpoint === stashBoxes[selectedStashboxIndex].endpoint);
+                const existingStashId = stashBoxes[selectedStashboxIndex].endpoint
                 if (existingStashId) {
                     alert(`Scene already has StashID for ${stashBoxes[selectedStashboxIndex].endpoint}.`);
                     return;
