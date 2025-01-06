@@ -1,6 +1,6 @@
 name: EMP Download
 description: Add EMP download URL to torrent when added to Stash scene.
-version: 0.2.0
+version: 0.2.1
 url: https://github.com/plato178/stash-extensions/
 exec:
   - python

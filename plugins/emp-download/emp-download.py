@@ -23,6 +23,10 @@ def send_emp_url_to_torrent(json_input, settings, scene_id):
     if any(matching_tags) == False and scene["organized"] == False:
         emp_url = [u for u in scene["urls"] if "empornium.is" in u.lower()][0]
 
+        if emp_url == None:
+            log.warning("No EMP URL found. Exiting.")
+            return
+
         studio_id = scene["studio"]["id"]
         studio_name = stash.find_studio(studio_id)["name"]
         torrent_filename = studio_name + " - " + scene["date"] + " - " + scene["title"] + ".torrent"
