@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Create Scene From StashDB
 // @author      plato178
-// @version     0.0.2
+// @version     0.0.3
 // @description Adds button to StashDB to create a scene in Stash instance.
 // @grant       GM_getValues
 // @icon        https://raw.githubusercontent.com/stashapp/stash/develop/ui/v2.5/public/favicon.png
