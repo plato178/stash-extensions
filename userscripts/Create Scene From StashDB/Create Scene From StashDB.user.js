@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Create Scene From StashDB
 // @author      plato178
-// @version     0.0.1
+// @version     0.0.2
 // @description Adds button to StashDB to create a scene in Stash instance.
 // @grant       GM_getValues
 // @icon        https://raw.githubusercontent.com/stashapp/stash/develop/ui/v2.5/public/favicon.png
@@ -27,10 +27,16 @@
     button.classList.add('btn', 'btn-primary');
     button.innerHTML = 'Create in Stash';
 
-    button.addEventListener('click', async () => {
+    button.addEventListener('click', async (evt) => {
       const sceneId = new URL(location.href).pathname.split('/').at(-1);
       const scene = await getSceneData(sceneId);
-      await createNewStashScene(scene);
+
+      createNewStashScene(scene)
+        .then((id) => {
+          console.log(`Scene created in Stash at ${stashApiEndpoint}/scenes/${id}`);
+          evt.target.innerHTML = 'Created!';
+          evt.target.disabled = true;
+        });
     });
 
     const buttonLink = document.createElement('a');
@@ -185,9 +191,6 @@
     return sendStashGraphQLRequest(stashApiEndpoint, stashApiKey, query, variables)
       .then(res => res?.data?.sceneCreate?.id)
   }
-
-  // const scene = await getSceneData('198d6ff1-bbcd-4ce6-a255-7fdebee39b6a')
-  // await createNewStashScene(scene)
 
   function waitForElm(selector) {
     return new Promise((resolve) => {
