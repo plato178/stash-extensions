@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Create Scene From StashDB
 // @author      plato178
-// @version     0.0.3
+// @version     0.0.4
 // @description Adds button to StashDB to create a scene in Stash instance.
 // @grant       GM_getValues
 // @icon        https://raw.githubusercontent.com/stashapp/stash/develop/ui/v2.5/public/favicon.png
@@ -33,7 +33,7 @@
 
       createNewStashScene(scene)
         .then((id) => {
-          const url = new URL(stashApiEndpoint).hostname + '/scenes/' + id;
+          const url = new URL(stashApiEndpoint).origin + '/scenes/' + id;
           console.log(`Scene created in Stash at ${url}`);
           evt.target.innerHTML = 'Created!';
           evt.target.disabled = true;
