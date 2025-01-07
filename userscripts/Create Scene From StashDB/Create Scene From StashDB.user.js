@@ -33,7 +33,8 @@
 
       createNewStashScene(scene)
         .then((id) => {
-          console.log(`Scene created in Stash at ${stashApiEndpoint}/scenes/${id}`);
+          const url = new URL(stashApiEndpoint).hostname + '/scenes/' + id;
+          console.log(`Scene created in Stash at ${url}`);
           evt.target.innerHTML = 'Created!';
           evt.target.disabled = true;
         });
