@@ -1,7 +1,7 @@
 name: RealPunting
 
-debug:
-  printHTML: true
+# debug:
+#   printHTML: true
 
 sceneByURL:
   - action: scrapeXPath
