@@ -3,24 +3,23 @@ name: RealPunting
 sceneByURL:
   - action: scrapeXPath
     url:
-      - realpunting.com/report/
+      - realpunting.com/field-reports/
     scraper: sceneScraper
 performerByURL:
   - action: scrapeXPath
     url:
-      - realpunting.com/escort/
+      - realpunting.com/escorts/
     scraper: performerScraper
-
 
 xPathScrapers:
   sceneScraper:
-    common: 
+    common:
       # $title: //div[@id="SelectedPornStar"]//p/span/text()
       $mainSection: //body/div[last()]/div[last()]/preceding-sibling::div/div[1]
       $title: $mainSection/div[1]/text()
     scene:
       Title: $mainSection/div[1]/text()
-      Details: 
+      Details:
         selector: //div[@id="SelectedPornStar"]//p/text()
         concat: "\n\n"
       Date:
@@ -28,15 +27,15 @@ xPathScrapers:
         # selector: //div[@id="SelectedPornStar"]//p[1]/text()[1]
         postProcess:
           - replace:
-            - regex: "Date of meet: "
-              with: ""
+              - regex: 'Date of meet: '
+                with: ''
       Image:
         selector: //img[contains(@class, 'materialboxed')]/@src
       Studio:
-        Name: 
+        Name:
           fixed: RealPunting
       Performers:
-        Name: 
+        Name:
           selector: $title[1]
           postProcess:
             - replace:
@@ -44,21 +43,20 @@ xPathScrapers:
                   with: $1
 
   performerScraper:
-    common: 
+    common:
       $mainSection: //body/div[last()]/div[last()]/preceding-sibling::div/div[1]
       $title: $mainSection/div[1]/text()
     performer:
-      Name: 
+      Name:
         selector: $title[1]
         postProcess:
           - replace:
               - regex: '\ of.*'
                 with: $1
-      Gender: 
+      Gender:
         fixed: Female
-      Country: 
+      Country:
         fixed: United Kingdom
       Image:
-          selector: //img[contains(@class, 'materialboxed')]/@src
-
-# Last Updated June 03, 2024
+        selector: //img[contains(@class, 'materialboxed')]/@src
+# Last Updated April 21, 2025
