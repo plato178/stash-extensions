@@ -1,5 +1,8 @@
 name: RealPunting
 
+debug:
+  printHTML: true
+
 sceneByURL:
   - action: scrapeXPath
     url:
@@ -15,12 +18,12 @@ xPathScrapers:
   sceneScraper:
     common:
       # $title: //div[@id="SelectedPornStar"]//p/span/text()
-      $mainSection: //body/div[last()]/div[last()]/preceding-sibling::div/div[1]
-      $title: $mainSection/div[1]/text()
+      $mainSection: //body/div#app/div[first()]/main/
+      $title: $mainSection/h1/text()
     scene:
-      Title: $mainSection/div[1]/text()
+      Title: $title
       Details:
-        selector: //div[@id="SelectedPornStar"]//p/text()
+        selector: $mainSection/*[@class="main-text"]/text()
         concat: "\n\n"
       Date:
         selector: $mainSection/div[2]/text()
