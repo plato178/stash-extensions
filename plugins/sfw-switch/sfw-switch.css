@@ -8,11 +8,7 @@ img.performer,
 .gallery .flexbin img,
 .wall-item-media,
 .image-card-preview-image,
-#scene-details-container .text-input,
-#scene-details-container .scene-header,
-#scene-details-container .react-select__single-value,
 .scene-details .pre,
-#scene-tabs-tabpane-scene-file-info-panel span.col-8.text-truncate > a,
 .gallery .flexbin img,
 .movie-details .logo {
   filter: blur(8px);
@@ -22,9 +18,6 @@ img.performer,
   filter: blur(13px);
 }
 
-.jw-video,
-.jw-preview,
-.jw-flag-floating,
 .image-container,
 .studio-logo,
 .scene-cover {
@@ -41,30 +34,4 @@ img.performer,
 
 .movie-card .text-truncate {
   filter: blur(4px);
-}
-
-.thumbnail-section:hover *,
-.card:hover,
-.card:hover .scene-studio-overlay,
-.video-js:hover .vjs-poster:hover,
-video:hover,
-.scene-header:hover > h3,
-div:hover > .scene-header,
-.studio-logo:hover,
-.scene-cover:hover,
-.scene-card-preview:hover,
-.scrubber-item:hover,
-.image-image:hover,
-div:hover > .image-header,
-.gallery-image:hover,
-.movie-images:hover,
-.movie-details > div > h2:hover,
-div:hover > .gallery-header,
-table > tbody > tr > td:hover > a > img.w-100,
-img.performer:hover,
-.studio-details .logo:hover,
-.studio-details:hover > div > h2,
-.logo-container > .logo:hover,
-.logo-container:hover > h2 {
-  filter: blur(0px) !important;
 }
