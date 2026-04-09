@@ -3,10 +3,10 @@
 .image-card-preview-image,
 .gallery-card-image,
 .performer-card-image,
-img.performer,
 .movie-card-image,
 .gallery .flexbin img,
 .wall-item-media,
+.wall-item video,
 .image-card-preview-image,
 .scene-details .pre,
 .gallery .flexbin img,
@@ -15,20 +15,20 @@ img.performer,
 }
 
 .scene-card-video {
-  filter: blur(13px);
+  /* filter: blur(13px); */
 }
 
 .image-container,
 .studio-logo,
 .scene-cover {
-  filter: blur(20px) !important;
+  filter: blur(8px) !important;
 }
 
 .vjs-poster {
   filter: blur(12px) !important;
 }
 
-.scrubber-item:before {
+.scrubber-item {
   filter: blur(4px) !important;
 }
 
