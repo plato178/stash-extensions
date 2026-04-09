@@ -25,12 +25,16 @@ img.performer,
 .jw-video,
 .jw-preview,
 .jw-flag-floating,
-.video-js:hover .vjs-poster,
+.video-js:hover,
 video:hover,
 .image-container,
 .studio-logo,
 .scene-cover {
   filter: blur(20px) !important;
+}
+
+.vjs-poster {
+  filter: blur(12px) !important;
 }
 
 .movie-card .text-truncate {
@@ -40,7 +44,7 @@ video:hover,
 .thumbnail-section:hover *,
 .card:hover,
 .card:hover .scene-studio-overlay,
-.video-js:hover .vjs-poster,
+.video-js:hover .vjs-poster:hover,
 video:hover,
 .scene-header:hover > h3,
 div:hover > .scene-header,
