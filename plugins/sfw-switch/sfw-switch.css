@@ -25,8 +25,6 @@ img.performer,
 .jw-video,
 .jw-preview,
 .jw-flag-floating,
-.video-js:hover,
-video:hover,
 .image-container,
 .studio-logo,
 .scene-cover {
@@ -35,6 +33,10 @@ video:hover,
 
 .vjs-poster {
   filter: blur(12px) !important;
+}
+
+.scrubber-item:before {
+  filter: blur(4px) !important;
 }
 
 .movie-card .text-truncate {
