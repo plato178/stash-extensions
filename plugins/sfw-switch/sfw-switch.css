@@ -20,7 +20,8 @@
 
 .image-container,
 .studio-logo,
-.scene-cover {
+.scene-cover,
+.scene-image {
   filter: blur(8px) !important;
 }
 
