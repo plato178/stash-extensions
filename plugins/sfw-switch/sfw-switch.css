@@ -38,7 +38,12 @@
   filter: blur(4px);
 } */
 
-/* Remove blur for studio logos on scene pages. */
-.scene-header-container .studio-logo {
+/* 
+  Remove blur for:
+  - Studio logos on scene pages. 
+  - Studio logos on scene list pages. 
+*/
+.scene-header-container .studio-logo,
+.thumbnail-section .studio-overlay {
   filter: none !important;
 }
