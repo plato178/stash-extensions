@@ -36,3 +36,8 @@
 .movie-card .text-truncate {
   filter: blur(4px);
 }
+
+/* Remove blur for studio logos on scene pages. */
+.scene-header-container .studio-logo {
+  filter: none;
+}
