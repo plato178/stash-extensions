@@ -61,6 +61,14 @@ settings:
     displayName: Skip Existing NFO Files
     description: Don't overwrite NFO files that already exist. Default is OFF.
     type: BOOLEAN
+  nfoPosterPathRewriteFrom:
+    displayName: Poster Path Rewrite (Stash Prefix)
+    description: The path prefix as Stash sees the video library (e.g., /mnt/user/media). When set together with Poster Path Rewrite (Server Prefix), this prefix is replaced in the poster path written to NFO files. Leave empty to write the full Stash path as-is.
+    type: STRING
+  nfoPosterPathRewriteTo:
+    displayName: Poster Path Rewrite (Server Prefix)
+    description: The path prefix as the media server sees the same video library (e.g., /data/media). Replaces the Stash prefix in the poster path written to NFO files. Leave empty to write the full Stash path as-is.
+    type: STRING
   nfoExcludeFields:
     displayName: NFO Exclude Fields
     description: "Comma-separated list of NFO fields to omit. Available: name, title, originaltitle, sorttitle, criticrating, rating, userrating, plot, premiered, releasedate, year, studio, uniqueid, genre. Leave empty to include all fields."

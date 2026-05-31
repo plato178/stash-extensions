@@ -299,10 +299,59 @@ class TestNfoArtworkReferences(unittest.TestCase):
         }
 
     def test_poster_thumb_when_video_path_provided(self):
-        """NFO should include poster thumb tag when video_path is given."""
+        """NFO should include full poster path alongside the video file."""
         nfo = build_nfo_xml(self.mock_scene, video_path="/videos/Test Scene.mp4")
 
-        self.assertIn('<thumb aspect="poster">Test Scene-poster.jpg</thumb>', nfo)
+        self.assertIn('<thumb aspect="poster">/videos/Test Scene-poster.jpg</thumb>', nfo)
+
+    def test_poster_thumb_path_rewrite_applied(self):
+        """Poster path in NFO should use server prefix when rewrite settings are configured."""
+        settings = {
+            "nfo_poster_path_rewrite_from": "/mnt/user/media",
+            "nfo_poster_path_rewrite_to": "/data/media",
+        }
+        nfo = build_nfo_xml(
+            self.mock_scene,
+            settings=settings,
+            video_path="/mnt/user/media/Studio/Test Scene.mp4",
+        )
+
+        self.assertIn(
+            '<thumb aspect="poster">/data/media/Studio/Test Scene-poster.jpg</thumb>', nfo
+        )
+        self.assertNotIn("/mnt/user/media", nfo)
+
+    def test_poster_thumb_no_rewrite_when_only_one_setting_set(self):
+        """Poster path rewrite should not apply when only one of the two settings is configured."""
+        settings = {
+            "nfo_poster_path_rewrite_from": "/mnt/user/media",
+            "nfo_poster_path_rewrite_to": "",
+        }
+        nfo = build_nfo_xml(
+            self.mock_scene,
+            settings=settings,
+            video_path="/mnt/user/media/Studio/Test Scene.mp4",
+        )
+
+        self.assertIn(
+            '<thumb aspect="poster">/mnt/user/media/Studio/Test Scene-poster.jpg</thumb>', nfo
+        )
+
+    def test_poster_thumb_no_rewrite_when_path_does_not_match_prefix(self):
+        """Poster path rewrite should not apply when the video path doesn't start with the rewrite-from prefix."""
+        settings = {
+            "nfo_poster_path_rewrite_from": "/other/path",
+            "nfo_poster_path_rewrite_to": "/data/media",
+        }
+        nfo = build_nfo_xml(
+            self.mock_scene,
+            settings=settings,
+            video_path="/mnt/user/media/Studio/Test Scene.mp4",
+        )
+
+        self.assertIn(
+            '<thumb aspect="poster">/mnt/user/media/Studio/Test Scene-poster.jpg</thumb>', nfo
+        )
 
     def test_no_poster_thumb_without_video_path(self):
         """NFO should not include poster thumb when video_path is None."""

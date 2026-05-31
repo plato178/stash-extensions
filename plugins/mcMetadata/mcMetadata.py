@@ -99,6 +99,8 @@ def get_settings(stash_instance):
         "renamer_enable_mark_organized": plugin_config.get("renamerMarkOrganized", True),
         "renamer_multi_file_mode": plugin_config.get("renamerMultiFileMode", "all"),
         "nfo_skip_existing": plugin_config.get("nfoSkipExisting", False),
+        "nfo_poster_path_rewrite_from": plugin_config.get("nfoPosterPathRewriteFrom", ""),
+        "nfo_poster_path_rewrite_to": plugin_config.get("nfoPosterPathRewriteTo", ""),
         "nfo_exclude_fields": [
             f.strip().lower()
             for f in plugin_config.get("nfoExcludeFields", "").split(",")
