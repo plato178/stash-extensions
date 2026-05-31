@@ -42,6 +42,7 @@ def _get_actor_thumb_path(performer_name, settings):
 
     # Use the NFO-specific path if configured, otherwise fall back to the write path
     nfo_base_path = settings.get("actor_metadata_path_nfo") or settings.get("actor_metadata_path", "")
+    log.debug(f"Using base path for actor images: {nfo_base_path}")
     return get_actor_image_path(performer_name, settings, base_path=nfo_base_path)
 
 

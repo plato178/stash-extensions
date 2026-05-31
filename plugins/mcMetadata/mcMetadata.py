@@ -107,6 +107,7 @@ def get_settings(stash_instance):
         "enable_actor_images": plugin_config.get("enableActorImages", False),
         "media_server": plugin_config.get("mediaServer", "jellyfin"),
         "actor_metadata_path": plugin_config.get("actorMetadataPath", ""),
+        "actor_metadata_path_nfo": plugin_config.get("actorMetadataPathNfo", ""),
     }
 
 
