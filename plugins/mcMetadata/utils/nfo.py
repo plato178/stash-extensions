@@ -1,4 +1,5 @@
 import os
+import utils.logger as log
 from xml.sax.saxutils import escape
 
 
