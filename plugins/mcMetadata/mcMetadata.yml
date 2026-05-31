@@ -74,8 +74,12 @@ settings:
     description: "Target media server: jellyfin, emby, or plex. Default is 'jellyfin'. Note: Plex does not support external performer images."
     type: STRING
   actorMetadataPath:
-    displayName: Actor Metadata Path
-    description: Path to media server's People metadata folder (e.g., /config/data/metadata/People/)
+    displayName: Actor Metadata Path (Write)
+    description: Path where Stash will write performer images (e.g., /config/data/metadata/People/). This is the local filesystem path Stash uses to save the files.
+    type: STRING
+  actorMetadataPathNfo:
+    displayName: Actor Metadata Path (NFO)
+    description: Path written into NFO files for performer image <thumb> tags. Leave empty to use the same value as Actor Metadata Path (Write). Set this when the media server accesses the files at a different path than where Stash writes them (e.g., Stash writes to /mnt/jellyfin/metadata/People/ but Jellyfin reads from /config/metadata/People/).
     type: STRING
 
 hooks:

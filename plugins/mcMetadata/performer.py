@@ -106,12 +106,13 @@ def process_performer(performer, settings, api_key, overwrite=False):
     download_image(image_url, image_path, settings)
 
 
-def get_actor_image_path(performer_name, settings):
+def get_actor_image_path(performer_name, settings, base_path=None):
     """Get the destination path for a performer image based on media server type.
 
     Args:
         performer_name: Name of the performer
         settings: Plugin settings dict
+        base_path: Override the base directory (defaults to actor_metadata_path from settings)
 
     Returns:
         str: Full path for the performer image, or None if invalid or unsupported
@@ -119,7 +120,8 @@ def get_actor_image_path(performer_name, settings):
     if not performer_name:
         return None
 
-    base_path = settings.get("actor_metadata_path", "")
+    if base_path is None:
+        base_path = settings.get("actor_metadata_path", "")
     if not base_path:
         return None
 

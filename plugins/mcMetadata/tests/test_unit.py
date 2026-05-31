@@ -356,6 +356,33 @@ class TestNfoArtworkReferences(unittest.TestCase):
         self.assertIn("<name>Jane Doe</name>", nfo)
         self.assertNotIn("<thumb>", nfo)
 
+    def test_actor_thumb_uses_nfo_path_when_set(self):
+        """NFO thumb tags should use actor_metadata_path_nfo when configured."""
+        settings = {
+            "enable_actor_images": True,
+            "media_server": "jellyfin",
+            "actor_metadata_path": "/mnt/jellyfin/metadata/People",
+            "actor_metadata_path_nfo": "/config/metadata/People",
+        }
+
+        nfo = build_nfo_xml(self.mock_scene, settings=settings)
+
+        self.assertIn("<thumb>/config/metadata/People/J/Jane Doe/folder.jpg</thumb>", nfo)
+        self.assertNotIn("/mnt/jellyfin/metadata/People", nfo)
+
+    def test_actor_thumb_falls_back_to_write_path_when_nfo_path_empty(self):
+        """NFO thumb tags should fall back to actor_metadata_path when nfo path is empty."""
+        settings = {
+            "enable_actor_images": True,
+            "media_server": "jellyfin",
+            "actor_metadata_path": "/metadata/People",
+            "actor_metadata_path_nfo": "",
+        }
+
+        nfo = build_nfo_xml(self.mock_scene, settings=settings)
+
+        self.assertIn("<thumb>/metadata/People/J/Jane Doe/folder.jpg</thumb>", nfo)
+
     def test_backward_compatible_no_args(self):
         """build_nfo_xml() should work with just scene arg (backward compatible)."""
         nfo = build_nfo_xml(self.mock_scene)
