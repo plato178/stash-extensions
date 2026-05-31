@@ -117,6 +117,7 @@ def build_nfo_xml(scene, settings=None, video_path=None):
         performer_name = escape_xml(p["name"])
         actor_thumb = ""
         actor_image_path = _get_actor_thumb_path(p["name"], settings)
+        log.debug(f"Actor file path for {performer_name}: {actor_image_path}")
         if actor_image_path:
             actor_thumb = f"\n        <thumb>{escape_xml(actor_image_path)}</thumb>"
 
