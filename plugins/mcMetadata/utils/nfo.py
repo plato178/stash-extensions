@@ -136,7 +136,7 @@ def build_nfo_xml(scene, settings=None, video_path=None):
         if rewrite_from and rewrite_to and backdrop_full_path.startswith(rewrite_from):
             backdrop_full_path = rewrite_to + backdrop_full_path[len(rewrite_from):]
             log.debug(f"Backdrop full file path for {backdrop_filename}: {backdrop_full_path}")
-        # lines.append(f'    <fanart><thumb preview="{escape_xml(backdrop_full_path)}">{escape_xml(backdrop_full_path)}</thumb></fanart>')
+        lines.append(f'    <fanart><thumb>{escape_xml(backdrop_full_path)}</thumb></fanart>')
 
     # Performers (always included)
     for i, p in enumerate(scene["performers"]):
