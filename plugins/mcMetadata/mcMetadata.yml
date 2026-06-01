@@ -1,7 +1,7 @@
 name: mcMetadata (plato178 fork)
 description: Generates NFO metadata files for Jellyfin/Emby/Plex, organizes/renames video files using customizable templates, and exports performer images to media server folders.
 url: https://github.com/plato178/stash-extensions/tree/main/plugins/mcMetadata
-version: 1.4.2
+version: 1.4.3
 exec:
   - python
   - "{pluginDir}/mcMetadata.py"
