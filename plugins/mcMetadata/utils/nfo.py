@@ -112,21 +112,31 @@ def build_nfo_xml(scene, settings=None, video_path=None):
     if video_path:
         base = os.path.splitext(os.path.basename(video_path))[0]
         poster_filename = f"{base}-poster.jpg"
+        backdrop_filename = f"{base}-fanart.jpg"
         # Build the full poster path so the media server can locate the file.
         # By default this is the full Stash filesystem path alongside the video.
         # When nfo_poster_path_rewrite_from/to are both set, swap the path prefix
         # so the path reflects where the media server mounts the same library.
         poster_dir = os.path.dirname(video_path)
+
         poster_full_path = os.path.join(poster_dir, poster_filename)
         log.debug(f"Poster file path for {poster_filename}: {poster_full_path}")
+
+        backdrop_full_path = os.path.join(poster_dir, backdrop_filename)
+        log.debug(f"Backdrop file path for {backdrop_filename}: {backdrop_full_path}")
+
         rewrite_from = (settings or {}).get("nfo_poster_path_rewrite_from", "")
-        log.debug(f"Rewrite from for {poster_filename}: {rewrite_from}")
         rewrite_to = (settings or {}).get("nfo_poster_path_rewrite_to", "")
-        log.debug(f"Rewrite to for {poster_filename}: {rewrite_to}")
+
         if rewrite_from and rewrite_to and poster_full_path.startswith(rewrite_from):
             poster_full_path = rewrite_to + poster_full_path[len(rewrite_from):]
             log.debug(f"Poster full file path for {poster_filename}: {poster_full_path}")
         lines.append(f'    <thumb aspect="poster">{escape_xml(poster_full_path)}</thumb>')
+
+        if rewrite_from and rewrite_to and backdrop_full_path.startswith(rewrite_from):
+            backdrop_full_path = rewrite_to + backdrop_full_path[len(rewrite_from):]
+            log.debug(f"Backdrop full file path for {backdrop_filename}: {backdrop_full_path}")
+        lines.append(f'    <fanart><thumb preview="{escape_xml(backdrop_full_path)}">{escape_xml(backdrop_full_path)}</thumb></fanart>')
 
     # Performers (always included)
     for i, p in enumerate(scene["performers"]):

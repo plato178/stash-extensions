@@ -95,9 +95,11 @@ def process_scene(scene, stash, settings, api_key):
 
     # download any missing artwork images from stash into path
     poster_path = replace_file_ext(target_video_path, "jpg", "-poster")
+    backdrop_path = replace_file_ext(target_video_path, "jpg", "-fanart")
     if not os.path.exists(poster_path):
         screenshot_url = f"{scene['paths']['screenshot']}&apikey={api_key}"
         download_image(screenshot_url, poster_path, settings)
+        download_image(screenshot_url, backdrop_path, settings)
 
 
 def __hydrate_scene(scene, stash):
